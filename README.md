@@ -14,11 +14,3 @@ Las imágenes se ajustan para completar cada celda de la cuadrícula, por lo que
 ## Privacidad
 
 Las imágenes se procesan directamente en tu navegador. No se envían a ningún servidor.
-
-## Ejecutar en tu computadora
-
-Descargá los archivos del repositorio y abrí `index.html` en tu navegador. No hace falta instalar dependencias.
-
-## Tecnologías
-
-La aplicación está hecha con HTML, CSS y JavaScript, y puede publicarse en GitHub Pages.
