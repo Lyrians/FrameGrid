@@ -16,12 +16,38 @@ function render() {
   thumbs.replaceChildren(...images.map(({url}) => { const img = document.createElement('img'); img.src = url; img.alt = ''; return img; }));
   document.querySelector('#gapValue').textContent = `${gap.value} px`;
   if (!images.length) { document.querySelector('#dimensions').textContent = '— × — PX'; return; }
-  const cols = Number(columns.value), spacing = Number(gap.value), [rw,rh] = ratio.value.split(':').map(Number), tileWidth = 640, tileHeight = Math.round(tileWidth * rh / rw), rows = Math.ceil(images.length / cols);
-  canvas.width = cols * tileWidth + (cols + 1) * spacing; canvas.height = rows * tileHeight + (rows + 1) * spacing + 54;
-  const ctx = canvas.getContext('2d'); ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,canvas.width,canvas.height);
-  images.forEach(({img}, i) => { const scale = Math.max(tileWidth / img.naturalWidth, tileHeight / img.naturalHeight), sw = tileWidth / scale, sh = tileHeight / scale; ctx.drawImage(img,(img.naturalWidth-sw)/2,(img.naturalHeight-sh)/2,sw,sh,spacing+(i%cols)*(tileWidth+spacing),spacing+Math.floor(i/cols)*(tileHeight+spacing),tileWidth,tileHeight); });
-  ctx.fillStyle = '#304050'; ctx.font = '18px Arial, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('Generado por FrameGrid - https://lyrians.github.io/FrameGrid/', canvas.width / 2, canvas.height - 27, canvas.width - 24);
-  document.querySelector('#dimensions').textContent = `${canvas.width} × ${canvas.height} PX`;
+  const cols = Number(columns.value), spacing = Number(gap.value), tileWidth = 640, rows = Math.ceil(images.length / cols);
+  const original = ratio.value === 'original';
+  const [rw, rh] = original ? [1, 1] : ratio.value.split(':').map(Number);
+  const fixedHeight = Math.round(tileWidth * rh / rw);
+  const rowHeights = Array.from({length: rows}, (_, row) => original
+    ? Math.max(...images.slice(row * cols, (row + 1) * cols).map(({img}) => Math.max(1, Math.round(tileWidth * img.naturalHeight / img.naturalWidth))))
+    : fixedHeight);
+  const width = cols * tileWidth + (cols + 1) * spacing;
+  const height = rowHeights.reduce((sum, value) => sum + value, 0) + (rows + 1) * spacing + 54;
+  const outputScale = Math.min(1, 32767 / width, 32767 / height, Math.sqrt(100000000 / (width * height)));
+  canvas.width = Math.max(1, Math.floor(width * outputScale));
+  canvas.height = Math.max(1, Math.floor(height * outputScale));
+  const ctx = canvas.getContext('2d');
+  ctx.scale(outputScale, outputScale);
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, width, height);
+  let y = spacing;
+  rowHeights.forEach((rowHeight, row) => {
+    images.slice(row * cols, (row + 1) * cols).forEach(({img}, col) => {
+      const x = spacing + col * (tileWidth + spacing);
+      if (original) {
+        const imageHeight = Math.max(1, Math.round(tileWidth * img.naturalHeight / img.naturalWidth));
+        ctx.drawImage(img, x, y, tileWidth, imageHeight);
+      } else {
+        const scale = Math.max(tileWidth / img.naturalWidth, fixedHeight / img.naturalHeight);
+        const sw = tileWidth / scale, sh = fixedHeight / scale;
+        ctx.drawImage(img, (img.naturalWidth - sw) / 2, (img.naturalHeight - sh) / 2, sw, sh, x, y, tileWidth, fixedHeight);
+      }
+    });
+    y += rowHeight + spacing;
+  });
+  ctx.fillStyle = '#304050'; ctx.font = '18px Arial, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('Generado por FrameGrid - https://lyrians.github.io/FrameGrid/', width / 2, height - 27, width - 24);
+  document.querySelector('#dimensions').textContent = `${canvas.width} × ${canvas.height} PX${outputScale < 1 ? " · ajustado al límite del navegador" : ""}`;
 }
 files.addEventListener('change', () => addFiles(files.files));
 ['dragenter','dragover'].forEach(name => drop.addEventListener(name, e => { e.preventDefault(); drop.classList.add('drag'); }));
