@@ -2,74 +2,19 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#f4f1e8">
-  <meta name="description" content="">
-  <title>FrameGrid</title>
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="alternate icon" href="assets/favicon.ico" sizes="16x16 32x32 48x48 256x256">
-  <link rel="apple-touch-icon" href="assets/favicon.png">
-  <link rel="stylesheet" href="assets/fonts/fonts.css">
-  <link rel="stylesheet" href="style.css">
-  <script src="image-validation.js" defer></script>
-  <script src="app.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FrameGrid — Nueva dirección</title>
+  <link rel="canonical" href="https://lyriansp.com/framegrid/">
+  <script>
+    const destination = new URL('https://lyriansp.com/framegrid/');
+    destination.search = window.location.search;
+    destination.hash = window.location.hash;
+    window.location.replace(destination.href);
+  </script>
+  <noscript><meta http-equiv="refresh" content="0; url=https://lyriansp.com/framegrid/"></noscript>
 </head>
 <body>
-  <p id="startup-error" class="error-message startup-error" role="alert" hidden>No se pudo iniciar FrameGrid. Recargá la página y comprobá que content.json esté disponible.</p>
-  <noscript>FrameGrid necesita JavaScript para generar screenshot sheets.</noscript>
-  <main id="app" inert>
-    <input id="files" type="file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" multiple hidden>
-    <section id="landing" class="landing" aria-labelledby="brand-title">
-      <div class="landing-content">
-        <p class="eyebrow" data-text="intro.eyebrow"></p>
-        <h1 id="brand-title" data-text="site.name"></h1>
-        <p class="slogan" data-text="intro.slogan"></p>
-        <button id="upload" class="upload-button" type="button">
-          <span class="plus-block"><img src="assets/icons/plus.svg" alt="" draggable="false"></span>
-          <span class="upload-title" data-text="upload.action"></span>
-        </button>
-        <p class="drop-hint" data-text="upload.hint"></p>
-        <p class="formats" data-text="upload.formats"></p>
-        <p id="load-limits" class="formats load-limits"></p>
-      </div>
-      <div class="landing-foot"><span data-text="intro.description"></span><span data-text="footer.creator"></span></div>
-    </section>
-    <section id="editor" class="editor" hidden aria-labelledby="editor-title">
-      <div class="editor-toolbar">
-        <button id="clear" class="text-button"><img class="icon" src="assets/icons/arrow-left.svg" alt=""><span data-text="upload.clear"></span></button>
-        <span class="editor-brand" data-text="site.name"></span>
-        <button id="download" class="button primary" disabled><img class="icon" src="assets/icons/arrow-down.svg" alt=""><span id="download-label"></span></button>
-      </div>
-      <div class="editor-layout">
-        <section class="preview">
-          <div class="preview-heading"><div><span class="eyebrow" data-text="preview.badge"></span><h1 id="editor-title" data-text="preview.title"></h1></div><button id="add" class="button secondary"><img class="icon" src="assets/icons/plus.svg" alt=""><span data-text="upload.add"></span></button></div>
-          <div class="preview-instructions"><span><img class="icon" src="assets/icons/grip.svg" alt=""><span data-text="preview.hint"></span></span><span id="count" class="count"></span></div>
-          <div class="stage" id="stage">
-            <div class="sheet" id="sheet"><div id="image-grid" class="image-grid" role="list" aria-describedby="keyboard-help"></div><div id="watermark" class="sheet-watermark"></div></div>
-          </div>
-          <div class="preview-footer"><span data-text="preview.order"></span><span id="dimensions"></span></div>
-          <p id="keyboard-help" class="keyboard-help" data-text="preview.keyboardHint"></p>
-          <p class="creator" data-text="footer.creator"></p>
-        </section>
-        <aside class="settings" aria-labelledby="settings-title">
-          <div class="settings-heading"><img class="icon" src="assets/icons/sliders.svg" alt=""><h2 id="settings-title" data-text="settings.title"></h2></div>
-          <fieldset>
-            <legend class="sr-only" data-text="settings.title"></legend>
-            <label for="filename" data-text="settings.filename"></label><div class="filename-control"><input id="filename" type="text" maxlength="120" autocomplete="off" spellcheck="false"><span id="file-extension" class="filename-extension" aria-hidden="true">.png</span></div>
-            <label for="columns" data-text="settings.columns"></label><select id="columns"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option></select>
-            <label for="gap"><span data-text="settings.gap"></span><span id="gap-value">16 px</span></label><input id="gap" type="range" min="0" max="32" value="16">
-            <label for="ratio" data-text="settings.ratio"></label><select id="ratio"><option value="original" data-text="settings.ratios.original"></option><option value="4:3" selected data-text="settings.ratios.classic"></option><option value="16:9" data-text="settings.ratios.wide"></option><option value="1:1" data-text="settings.ratios.square"></option></select>
-            <label id="background-label" data-text="settings.background"></label><div id="backgrounds" class="swatches" role="group" aria-labelledby="background-label"><button type="button" class="swatch" data-color="#ffffff" aria-pressed="true" data-label="settings.colors.white" style="--swatch:#ffffff"></button><button type="button" class="swatch" data-color="#282824" aria-pressed="false" data-label="settings.colors.black" style="--swatch:#282824"></button><button type="button" class="swatch" data-color="#ff643b" aria-pressed="false" data-label="settings.colors.orange" style="--swatch:#ff643b"></button><button type="button" class="swatch" data-color="#c0c49b" aria-pressed="false" data-label="settings.colors.sage" style="--swatch:#c0c49b"></button></div>
-            <label for="format" data-text="settings.export"></label><select id="format"><option value="png">PNG</option><option value="jpeg">JPG</option><option value="webp">WEBP</option></select>
-          </fieldset>
-          <p class="privacy"><img class="icon" src="assets/icons/images.svg" alt=""><span data-text="privacy"></span></p>
-        </aside>
-      </div>
-    </section>
-    <button id="cancel-load" class="button secondary loading-cancel" hidden data-text="upload.cancel"></button>
-    <p id="error" class="error-message" role="alert" hidden></p>
-    <p id="status" class="sr-only" role="status" aria-live="polite"></p>
-    <canvas id="canvas" hidden></canvas>
-  </main>
+  <p>FrameGrid ahora está en <a href="https://lyriansp.com/framegrid/">lyriansp.com/framegrid/</a>.</p>
+  <p>Si no se abre automáticamente, seguí el enlace.</p>
 </body>
 </html>

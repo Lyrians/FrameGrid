@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-<!-- Plus: Font Awesome Free 6.7.2, CC BY 4.0; see icons/LICENSE.txt. -->
-<g transform="rotate(-4 64 64)">
-  <path fill="#20201d" d="M18 18h102v102H18z"/>
-  <path fill="#ff643b" stroke="#20201d" stroke-width="3" d="M11 11h102v102H11z"/>
-  <path fill="#000" transform="translate(43.625 41) scale(.08203125)" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/>
-</g>
-</svg>
